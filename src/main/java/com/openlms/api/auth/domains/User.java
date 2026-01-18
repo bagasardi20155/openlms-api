@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.openlms.api.classroom.domains.ClassEntity;
+import com.openlms.api.classroom.domains.Enrollment;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -74,4 +76,12 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<UserOtp> userOtps;
+
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ClassEntity> classes;
+    
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Enrollment> enrollments;
 }

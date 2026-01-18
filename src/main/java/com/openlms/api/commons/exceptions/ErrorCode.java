@@ -8,7 +8,7 @@ public enum ErrorCode {
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED"),
     FORBIDDEN(HttpStatus.FORBIDDEN, "FORBIDDEN"),
     NOT_FOUND(HttpStatus.NOT_FOUND, "NOT_FOUND"),
-    CONFLICT(HttpStatus.NOT_FOUND, "CONFLICT");
+    CONFLICT(HttpStatus.CONFLICT, "CONFLICT");
 
     private final HttpStatus httpStatus;
     private final String code;
