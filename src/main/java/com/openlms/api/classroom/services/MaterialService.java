@@ -15,6 +15,7 @@ import com.openlms.api.classroom.domains.Material;
 import com.openlms.api.classroom.domains.MaterialProgress;
 import com.openlms.api.classroom.domains.MaterialType;
 import com.openlms.api.classroom.dtos.requests.CreateMaterialRequest;
+import com.openlms.api.classroom.dtos.requests.PublishMaterialRequest;
 import com.openlms.api.classroom.dtos.requests.UpdateMaterialRequest;
 import com.openlms.api.classroom.dtos.responses.MaterialResponse;
 import com.openlms.api.classroom.dtos.responses.ProgressResponse;
@@ -167,5 +168,14 @@ public class MaterialService {
                 ProgressProjection.getCompletedMaterials() == null ? 0 : ProgressProjection.getCompletedMaterials(),
                 ProgressProjection.getProgressPercent() == null ? 0 : ProgressProjection.getProgressPercent()
         );
+    }
+
+    public MaterialResponse publish(Jwt jwt, PublishMaterialRequest request) {
+        RequireRole.requireRole(jwt, "TEACHER");
+
+        Material material = materialRepository.findById(request.materialId()).orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND, "Material not found"));
+        material.setPublished(!material.isPublished());
+        materialRepository.save(material);
+        return mapToResponse(material);
     }
 }

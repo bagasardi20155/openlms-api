@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openlms.api.classroom.dtos.requests.CreateMaterialRequest;
+import com.openlms.api.classroom.dtos.requests.PublishMaterialRequest;
 import com.openlms.api.classroom.dtos.requests.UpdateMaterialRequest;
 import com.openlms.api.classroom.dtos.responses.MaterialResponse;
 import com.openlms.api.classroom.dtos.responses.ProgressResponse;
@@ -63,5 +64,13 @@ public class MaterialController {
         @AuthenticationPrincipal Jwt jwt
     ) {
         return ApiResponse.ok(materialService.getProgress(classId, jwt));
+    }
+
+    @PostMapping("/publish")
+    public ApiResponse<MaterialResponse> publish(
+        @AuthenticationPrincipal Jwt jwt,
+        @RequestBody @Valid PublishMaterialRequest request
+    ) {
+        return ApiResponse.ok(materialService.publish(jwt, request));
     }
 }

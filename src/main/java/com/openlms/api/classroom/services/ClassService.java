@@ -31,7 +31,13 @@ public class ClassService {
     }
 
     private ClassResponse mapToResponse(ClassEntity classEntity) {
-        return new ClassResponse(classEntity.getId(), classEntity.getTeacher().getId(), classEntity.getTitle(), classEntity.getDescription(), classEntity.isPublished());
+        return new ClassResponse(
+            classEntity.getId(), 
+            classEntity.getTeacher().getId(), 
+            classEntity.getTitle(), 
+            classEntity.getDescription(), 
+            classEntity.isPublished()
+        );
     }
 
     @Transactional
