@@ -57,8 +57,8 @@ public class ErrorResponse {
         return path; 
     }
     
-    public OffsetDateTime getTimestamp() { 
-        return timestamp; 
+    public String getTimestamp() { 
+        return timestamp.toString(); 
     }
     
     public String getTraceId() { 

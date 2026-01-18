@@ -48,6 +48,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/actuator/health").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/signup").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/send-otp").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/verify-otp").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers("/oauth2/**", "/login/**").permitAll()
@@ -81,9 +82,10 @@ public class SecurityConfig {
 
     @Bean
     JwtEncoder jwtEncoder(@Value("${app.security.jwt.secret}") String secret) {
-        var key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
-        return new NimbusJwtEncoder(new ImmutableSecret<>(key));
+        SecretKeySpec key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
+        return new NimbusJwtEncoder(new com.nimbusds.jose.jwk.source.ImmutableSecret<>(key));
     }
+
 
     @Bean
     JwtDecoder jwtDecoder(

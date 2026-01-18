@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -37,10 +39,11 @@ public class JwtService {
                 .claim("email", email)
                 .claim("role", role);
 
-        if (extraClaims != null) {
-            extraClaims.forEach(claims::claim);
-        }
+        if (extraClaims != null) extraClaims.forEach(claims::claim);
 
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims.build())).getTokenValue();
+        JwsHeader jwsHeader = JwsHeader.with(MacAlgorithm.HS256).build();
+
+        return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims.build()))
+                .getTokenValue();
     }
 }
