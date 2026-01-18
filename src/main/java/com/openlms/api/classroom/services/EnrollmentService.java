@@ -43,7 +43,7 @@ public class EnrollmentService {
         UUID studentId = JwtHelper.userId(jwt);
 
         ClassEntity classEntity = classRepository.findById(classId).orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND, "Class not found"));
-        User student = userRepository.findById(classId).orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND, "Class not found"));
+        User student = userRepository.findById(studentId).orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND, "Student not found"));
 
         if (!classEntity.isPublished()) {
             throw new DomainException(ErrorCode.FORBIDDEN, "Class archived");

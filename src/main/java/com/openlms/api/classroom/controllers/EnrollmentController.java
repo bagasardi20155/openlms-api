@@ -7,12 +7,15 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.openlms.api.classroom.dtos.responses.EnrollmentResponse;
 import com.openlms.api.classroom.services.EnrollmentService;
 import com.openlms.api.commons.apis.ApiResponse;
 
-@Service
+@RestController
+@RequestMapping("/api/class")
 public class EnrollmentController {
     private final EnrollmentService enrollmentService;
     public EnrollmentController(EnrollmentService enrollmentService) {
