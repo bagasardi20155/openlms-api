@@ -69,4 +69,9 @@ public class ClassEntity {
     @OneToMany(mappedBy = "classEntity", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Material> materials;
+
+    @OneToMany(mappedBy = "classEntity", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<MaterialProgress> materialProgresses;
+
 }

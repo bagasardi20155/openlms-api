@@ -8,6 +8,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.openlms.api.classroom.domains.ClassEntity;
 import com.openlms.api.classroom.domains.Enrollment;
+import com.openlms.api.classroom.domains.MaterialProgress;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -84,4 +85,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Enrollment> enrollments;
+    
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<MaterialProgress> materialProgresses;
 }

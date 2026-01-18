@@ -1,10 +1,13 @@
 package com.openlms.api.classroom.domains;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -69,4 +73,8 @@ public class Material {
     @JoinColumn(name = "class_id")
     @JsonBackReference
     private ClassEntity classEntity;
+    
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<MaterialProgress> materialProgresses;
 }

@@ -14,7 +14,7 @@ public interface MaterialRepository extends JpaRepository<Material, UUID> {
             select *
             from materials
             where class_id = :classId
-            and published = :published
+            and is_published = :published
             order by position asc            
         """
     , nativeQuery = true)
@@ -25,7 +25,7 @@ public interface MaterialRepository extends JpaRepository<Material, UUID> {
             SELECT COUNT(*)     
             FROM materials
             WHERE class_id = :classid
-            and published = :published
+            and is_published = :published
         """
     , nativeQuery = true)
     long countByClassIdAndPublished(UUID classId, boolean published);
