@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/auth/send-otp").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/verify-otp").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/payment/webhook/**").permitAll()
                 .requestMatchers("/oauth2/**", "/login/**").permitAll()
                 .anyRequest().authenticated()
             )
