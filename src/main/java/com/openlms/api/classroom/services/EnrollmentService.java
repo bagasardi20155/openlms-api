@@ -1,11 +1,12 @@
 package com.openlms.api.classroom.services;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
-import com.openlms.api.auth.domains.Role;
 import com.openlms.api.auth.domains.User;
 import com.openlms.api.auth.repositories.UserRepository;
 import com.openlms.api.classroom.domains.ClassEntity;
@@ -16,6 +17,7 @@ import com.openlms.api.classroom.helpers.JwtHelper;
 import com.openlms.api.classroom.helpers.RequireRole;
 import com.openlms.api.classroom.repositories.ClassRepository;
 import com.openlms.api.classroom.repositories.EnrollmentRepository;
+import com.openlms.api.commons.events.EnrollmentCreatedEvent;
 import com.openlms.api.commons.exceptions.DomainException;
 import com.openlms.api.commons.exceptions.ErrorCode;
 
@@ -26,14 +28,17 @@ public class EnrollmentService {
     private final ClassRepository classRepository;
     private final EnrollmentRepository enrollmentRepository;
     private final UserRepository userRepository;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
     public EnrollmentService(
         ClassRepository classRepository,
         EnrollmentRepository enrollmentRepository,
-        UserRepository userRepository
+        UserRepository userRepository,
+        KafkaTemplate<String, Object> kafkaTemplate
     ) {
         this.classRepository = classRepository;
         this.enrollmentRepository = enrollmentRepository;
         this.userRepository = userRepository;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Transactional
@@ -59,6 +64,17 @@ public class EnrollmentService {
         enrollment.setStatus(EnrollmentStatus.ACTIVE);
 
         Enrollment saved = enrollmentRepository.save(enrollment);
+
+        var event = new EnrollmentCreatedEvent(
+            enrollment.getId(),
+            classId,
+            studentId,
+            student.getEmail(),
+            classEntity.getTitle(),
+            OffsetDateTime.now()
+        );
+
+        kafkaTemplate.send("openlms.enrollment.created", studentId.toString(), event);
 
         return new EnrollmentResponse(saved.getId(), classId, studentId, saved.getStatus().name());
     }
